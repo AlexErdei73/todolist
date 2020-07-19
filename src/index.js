@@ -16,7 +16,7 @@ console.log(project.list[0].title);
 console.log(project.list[1].title);
 console.log(project.list[2].title);
 console.log(project.list[3].title);
-project.delete(4);
+project.delete(2);
 console.log(project.count);
 console.log(project.list[0].title);
 console.log(project.list[1].title);

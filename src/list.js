@@ -13,12 +13,7 @@ export class List {
         } else {
             if (index < 0 || index > count) 
                 throw new Error('index is out of range')
-            const elem = list[count - 1];
-            list.push(elem);
-            for (let i = count; i > index; i--){
-                list[i] = list[i - 1];
-            }
-            list[index] = item;
+            list.splice(index, 0, item);
         }
         _list.set(this, list);
     }
@@ -28,11 +23,10 @@ export class List {
         if (index != -1) {
             if (index < 0 || index >= list.length)
                 throw new Error('index out of range')
-            for (let i = index; i < list.length - 1; i++){
-                list[i] = list[i + 1];
-            }
+            list.splice(index, 1);
+        } else {
+            list.pop();
         }
-        list.pop();
         _list.set(this, list);
     }
 
