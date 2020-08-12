@@ -12,3 +12,11 @@ export function display(todo) {
         notes.value = todo.notes.join('\n');
     }
 
+export function save(todo) {
+        todo.tilte = title.value;
+        todo.description = description.value;
+        todo.dueDate = new Date(dueDate.value);
+        todo.priority = priority.value;
+        todo.notes = notes.value.split('\n');
+    }
+
