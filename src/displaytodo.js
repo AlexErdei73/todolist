@@ -13,7 +13,7 @@ export function display(todo) {
     }
 
 export function save(todo) {
-        todo.tilte = title.value;
+        todo.title = title.value;
         todo.description = description.value;
         todo.dueDate = new Date(dueDate.value);
         todo.priority = priority.value;

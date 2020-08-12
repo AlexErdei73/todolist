@@ -1,6 +1,6 @@
 import { ToDo } from './todo.js';
 import { Project, Projects } from './projects.js';
-import { display } from './displaytodo.js';
+import { display, save } from './displaytodo.js';
 
 const allProjects = new Projects();
 const defProject = new Project('daily routine');
@@ -14,3 +14,11 @@ trialTodo.notes = ['You must do it for at least 3 minutes.',
                    'You should do it after eating sweets too.'];
 display(trialTodo);
 
+const saveBtn = document.querySelector('#new');
+
+function onClick() {
+    save(trialTodo);
+    display(trialTodo);
+}
+
+newBtn.addEventListener('click', onClick);

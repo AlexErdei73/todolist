@@ -1,18 +1,18 @@
 import { List } from './list.js';
 
-const _name = new WeakMap();
+const _title = new WeakMap();
 const _list = new WeakMap();
 export class Project {
-    constructor(name){
-        _name.set(this, name);
+    constructor(title){
+        _title.set(this, title);
         _list.set(this, new List());
     }
 
-    get name() {
-        return _name.get(this);
+    get title() {
+        return _title.get(this);
     }
 
-    get todolist() {
+    get list() {
         return _list.get(this);
     }
 
