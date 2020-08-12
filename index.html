@@ -3,12 +3,49 @@
     <head>
         <title>ToDoList</title>
         <meta charset="UTF-8"> 
-        <stile>
-            
-        </stile> 
+        <style>
+            body {
+                background: rgb(103, 192, 188);
+            }           
+           h1 {
+               width: 200px;
+               margin: auto;
+           }
+           div {
+               display: block;
+               width: 30%;
+               height: 600px;
+               float: left;
+               border: 1px solid black;
+               margin: 1.5%;
+           } 
+        </style> 
     </head>
     <body>
         <h1>ToDoList</h1>
+        <div class = "projects">
+            <ul></ul>
+        </div>
+        <div class = "todos">
+            <ul></ul>
+        </div>
+        <div class = "todo">
+            <label for = "title">Title</label><br>
+            <input type = "text" id = "title"><br>
+            <label for = "description">Description</label>
+            <textarea id = "description" rows = "4" cols = "50"></textarea><br>
+            <label for = "duedate">Due date</label><br>
+            <input type = "date" id = "duedate"><br>
+            <label for = "priority">Priority</label><br>
+            <select id = "priority">
+                <option>low</option>
+                <option>medium</option>
+                <option>high</option>
+            </select><br>
+            <label for = "notes">Notes</label><br>
+            <textarea id = "notes" rows = "4" cols = "50"></textarea>
+            <button id = "addtodo">Add ToDo</button>
+        </div>
         <script src="main.js"></script>
     </body>
 </html>
