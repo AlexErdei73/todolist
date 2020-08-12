@@ -33,8 +33,8 @@ export class ToDo{
         return _dueDate.get(this);
     }
 
-    set priority(number) {
-        _priority.set(this, number);
+    set priority(text) {
+        _priority.set(this, text);
     }
     
     get priority() {
