@@ -1,50 +1,50 @@
-const _list = new WeakMap();
+const _array = new WeakMap();
 
 export class List {
     constructor(items = []){
-        _list.set(this, items);
+        _array.set(this, items);
     }
 
     add(item, index = -1){
-        const list = _list.get(this);
-        const count = list.length;
+        const arr = _array.get(this);
+        const count = arr.length;
         if (index == -1){
-            list.push(item);
+            arr.push(item);
         } else {
             if (index < 0 || index > count) 
                 throw new Error('index is out of range')
-            list.splice(index, 0, item);
+            arr.splice(index, 0, item);
         }
-        _list.set(this, list);
+        _array.set(this, arr);
     }
 
     delete(index = -1){
-        let list = _list.get(this);
+        let arr = _array.get(this);
         if (index != -1) {
-            if (index < 0 || index >= list.length)
+            if (index < 0 || index >= arr.length)
                 throw new Error('index out of range')
-            list.splice(index, 1);
+            arr.splice(index, 1);
         } else {
-            list.pop();
+            arr.pop();
         }
-        _list.set(this, list);
+        _array.set(this, arr);
     }
 
     del(item){
-        const list = _list.get(this);
+        const arr = _array.get(this);
         if (item) {
-            const index = list.indexOf(item);
+            const index = arr.indexOf(item);
             if (index == -1) 
                 throw new Error('item is not in the list')
             this.delete(index);
         }
     }
 
-    get list() {
-        return _list.get(this);
+    get arr() {
+        return _array.get(this);
     }
 
     get count() {
-        return _list.get(this).length;
+        return _array.get(this).length;
     }
 }
