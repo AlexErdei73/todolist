@@ -4,7 +4,7 @@ const dueDate = document.querySelector('#duedate');
 const priority = document.querySelector('#priority');
 const notes = document.querySelector('#notes');
 
-export function display(todo) {
+export function output(todo) {
         if (!todo) return
         title.value = todo.title;
         description.value = todo.description;
@@ -13,7 +13,7 @@ export function display(todo) {
         notes.value = todo.notes.join('\n');
     }
 
-export function save(todo) {
+export function input(todo) {
         if (!todo) return
         todo.title = title.value;
         todo.description = description.value;

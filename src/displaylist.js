@@ -42,6 +42,4 @@ export class DisplayList {
             _displayItem.get(this)(element);
         });
     }
-
-
 }

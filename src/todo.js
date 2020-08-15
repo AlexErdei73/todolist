@@ -1,3 +1,5 @@
+import { input, output } from './displaytodo.js';
+
 const _title = new WeakMap();
 const _description = new WeakMap();
 const _dueDate = new WeakMap();
@@ -49,5 +51,13 @@ export class ToDo{
     
     get notes() {
         return _notes.get(this);
+    }
+
+    input() {
+        input(this);
+    }
+
+    output() {
+        output(this);
     }
 }

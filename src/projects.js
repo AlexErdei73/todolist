@@ -1,11 +1,10 @@
 import { List } from './list.js';
 import { ToDo } from './todo.js';
-import { display, save } from './displaytodo.js';
 
 const _title = new WeakMap();
 const _list = new WeakMap();
 const _active = new WeakMap();
-export class Project {
+class ListWithActiveItem {
     constructor(title){
         _title.set(this, title);
         _list.set(this, new List());
@@ -27,15 +26,16 @@ export class Project {
     set active(i) {
         const list = _list.get(this);
         const active = _active.get(this);
-        if (active > -1) save(list.arr[active]);
-        display(list.arr[i]);
+        if (active >= 0 && active < list.count) list.arr[active].input();
+        if (i >= 0) list.arr[i].output();
         return _active.set(this, i);
     }
 
-    new() {
+    addNew(item) {
         const list = _list.get(this);
-        list.add(new ToDo(''));
-        this.active = list.count - 1;
+        item.input();
+        list.add(item);
+        _active.set(this,list.count - 1);
         _list.set(this, list);
     }
 
@@ -51,21 +51,9 @@ export class Project {
     }
 }
 
-const _projectList = new WeakMap();
-export class Projects {
-    constructor() {
-        _projectList.set(this, new List());
-    }
-
-    get projectList() {
-        return _projectList.get(this);
-    }
-
-    add(project) {
-        _projectList.get(this).add(project);
-    }
-
-    remove(project) {
-        _projectList.get(this).del(project);
+export class Project extends ListWithActiveItem {
+    new() {
+        const item = new ToDo();
+        this.addNew(item);
     }
 }
