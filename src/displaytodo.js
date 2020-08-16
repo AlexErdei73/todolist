@@ -17,7 +17,11 @@ export function input(todo) {
         if (!todo) return
         todo.title = title.value;
         todo.description = description.value;
-        todo.dueDate = new Date(dueDate.value);
+        if (!dueDate.value) {
+            todo.dueDate = new Date(0);
+        } else {
+            todo.dueDate = new Date(dueDate.value);
+        }
         todo.priority = priority.value;
         todo.notes = notes.value.split('\n');
     }

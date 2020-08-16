@@ -4,6 +4,7 @@ const _deleteBtn = new WeakMap();
 const _displayItem = new WeakMap();
 const _onClickDelete = new WeakMap();
 const _onClickNew = new WeakMap();
+const _erase = new WeakMap();
 
 export class DisplayList {
     constructor(div, items) {
@@ -28,16 +29,15 @@ export class DisplayList {
             this.render();
         });
         _newBtn.get(this).addEventListener('click', _onClickNew.get(this));
-    }
-
-    erase() {
-        const ul = _ul.get(this);
-        ul.innerHTML = '';
-        _ul.set(this, ul);
+        _erase.set(this, () => {
+            const ul = _ul.get(this);
+            ul.innerHTML = '';
+            _ul.set(this, ul);
+        });
     }
 
     render() {
-        this.erase();
+        _erase.get(this)();
         this.items.list.arr.forEach(element => {
             _displayItem.get(this)(element);
         });

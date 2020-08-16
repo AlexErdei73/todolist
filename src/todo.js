@@ -9,7 +9,7 @@ const _notes = new WeakMap();
 export class ToDo{
     constructor(title = ''){
         _title.set(this, title);
-        _dueDate.set(this, new Date('2019-12-31'));
+        _dueDate.set(this, new Date(0));
         _notes.set(this, []);
     }
 
