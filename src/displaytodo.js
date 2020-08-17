@@ -1,8 +1,9 @@
-const title = document.querySelector('#title');
-const description = document.querySelector('#description');
-const dueDate = document.querySelector('#duedate');
-const priority = document.querySelector('#priority');
-const notes = document.querySelector('#notes');
+const divTodo = document.querySelector('.todo');
+const title = divTodo.querySelector('#title');
+const description = divTodo.querySelector('#description');
+const dueDate = divTodo.querySelector('#duedate');
+const priority = divTodo.querySelector('#priority');
+const notes = divTodo.querySelector('#notes');
 
 export function output(todo) {
         if (!todo) return
@@ -26,3 +27,5 @@ export function input(todo) {
         todo.notes = notes.value.split('\n');
     }
 
+export const divTodos = document.querySelector('.todos');
+export const divProjects = document.querySelector('.projects');

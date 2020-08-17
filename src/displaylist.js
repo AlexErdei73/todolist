@@ -1,3 +1,4 @@
+const _title = new WeakMap();
 const _ul = new WeakMap();
 const _newBtn = new WeakMap();
 const _deleteBtn = new WeakMap();
@@ -10,6 +11,7 @@ export class DisplayList {
     constructor(div, items) {
         this.div = div;
         this.items = items;
+        _title.set(this, div.querySelector('#title'));
         _ul.set(this, div.querySelector('ul'));
         _newBtn.set(this, div.querySelector('#new'));
         _deleteBtn.set(this, div.querySelector('#delete'));
@@ -21,12 +23,12 @@ export class DisplayList {
         });
         _onClickDelete.set(this, () => {
             this.items.remove();
-            this.render();
+            this.output();
         });
         _deleteBtn.get(this).addEventListener('click', _onClickDelete.get(this));
         _onClickNew.set(this, () => {
             this.items.new();
-            this.render();
+            this.output();
         });
         _newBtn.get(this).addEventListener('click', _onClickNew.get(this));
         _erase.set(this, () => {
@@ -36,10 +38,15 @@ export class DisplayList {
         });
     }
 
-    render() {
+    output() {
         _erase.get(this)();
+        _title.set(this, this.items.title);
         this.items.list.arr.forEach(element => {
             _displayItem.get(this)(element);
         });
+    }
+
+    input() {
+        this.items.title = _title.get(this).value;
     }
 }

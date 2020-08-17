@@ -1,9 +1,3 @@
-import { Project } from './projects.js';
-import { DisplayList } from './displaylist.js';
+import { Projects } from './projects.js';
 
-//const allProjects = new Projects();
-const defProject = new Project('daily routine');
-//allProjects.add(defProject);
-const divTodos = document.querySelector('.todos');
-const projectDisplay = new DisplayList(divTodos, defProject);
-projectDisplay.render();
+const allProjects = new Projects();
