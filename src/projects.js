@@ -13,6 +13,11 @@ class ListWithActiveItem {
         _active.set(this, -1);
     }
 
+    updateDisplay(items, inputindex, outputindex) {
+        if (inputindex >= 0 && inputindex < items.count) items.arr[inputindex].input();
+        if (outputindex >= 0) items.arr[outputindex].output();
+    }
+
     set title(text) {
         _title.set(this, text);
     }
@@ -32,8 +37,7 @@ class ListWithActiveItem {
     set active(i) {
         const list = _list.get(this);
         const active = _active.get(this);
-        if (active >= 0 && active < list.count) list.arr[active].input();
-        if (i >= 0) list.arr[i].output();
+        this.updateDisplay(list, active, i);
         return _active.set(this, i);
     }
 
