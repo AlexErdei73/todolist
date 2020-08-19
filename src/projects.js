@@ -6,16 +6,23 @@ import { divTodos, divProjects } from './displaytodo.js';
 const _title = new WeakMap();
 const _list = new WeakMap();
 const _active = new WeakMap();
+const _updateDisplay = new WeakMap();
+const _outputActiveChild = new WeakMap();
 class ListWithActiveItem {
-    constructor(title){
+    constructor(title, divDisplay){
+        this.display = new DisplayList(divDisplay, this);
         _title.set(this, title);
         _list.set(this, new List());
         _active.set(this, -1);
-    }
-
-    updateDisplay(items, inputindex, outputindex) {
-        if (inputindex >= 0 && inputindex < items.count) items.arr[inputindex].input();
-        if (outputindex >= 0) items.arr[outputindex].output();
+        _updateDisplay.set(this, (items, inputindex, outputindex) => {
+            if (inputindex >= 0 && inputindex < items.count) items.arr[inputindex].input();
+            if (outputindex >= 0) items.arr[outputindex].output();
+        })
+        _outputActiveChild.set(this, () => {
+            const items = _list.get(this).arr;
+            const active = _active.get(this);
+            if (active >= 0) items[active].output();
+        })
     }
 
     set title(text) {
@@ -37,8 +44,10 @@ class ListWithActiveItem {
     set active(i) {
         const list = _list.get(this);
         const active = _active.get(this);
-        this.updateDisplay(list, active, i);
-        return _active.set(this, i);
+        _active.set(this, i);
+        _updateDisplay.get(this)(list, active, i);
+        this.output();
+        return _active.get(this);
     }
 
     addNew(item) {
@@ -47,6 +56,7 @@ class ListWithActiveItem {
         list.add(item);
         _active.set(this, list.count - 1);
         _list.set(this, list);
+        this.output();
     }
 
     remove() {
@@ -54,18 +64,27 @@ class ListWithActiveItem {
         if (list.count > 0) {
             list.delete(this.active);
             if (list.count <= this.active) {
-                this.active = list.count - 1;
+                _active.set(this, list.count - 1);
             }
         }
         _list.set(this, list);
+        this.output();
+    }
+
+    input() {
+        this.display.input();
+    }
+
+    output() {
+        this.display.output();
+        _outputActiveChild.get(this)();
     }
 }
 
 const _isActive = new WeakMap();
 class Project extends ListWithActiveItem {
     constructor(title, projects) {
-        super(title);
-        this.display = new DisplayList(divTodos, this);
+        super(title, divTodos);
         this.projects = projects;
         _isActive.set(this, () => {
             const active = this.projects.active;
@@ -76,31 +95,26 @@ class Project extends ListWithActiveItem {
     new() {
         if (!_isActive.get(this)()) return
         const todo = new ToDo();
-        this.addNew(todo);
+        this.addNew(todo);  
     }
 
     remove() {
-        if (!_isActive.get(this)()) return
-        super.remove();
+        if (_isActive.get(this)()) super.remove();
     }
 
-    input() {
-        this.display.input();
-    }
 
     output() {
-        this.display.output();
+        if (_isActive.get(this)()) super.output();
     }
 }
 
 export class Projects extends ListWithActiveItem {
-    constructor(){
-        super('allProjects');
-        this.display = new DisplayList(divProjects, this);
+    constructor(title){
+        super(title, divProjects);
     }
+
     new() {
         const project = new Project('', this);
-        this.addNew(project);
-        project.display.output();
+        super.addNew(project);
     }
 }

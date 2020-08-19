@@ -1,3 +1,3 @@
 import { Projects } from './projects.js';
 
-const allProjects = new Projects();
+const allProjects = new Projects('allProjects');
