@@ -92,6 +92,10 @@ class Project extends ListWithActiveItem {
         })
     }
 
+    get dueDate() {
+        return new Date(0);
+    }
+
     new() {
         if (!_isActive.get(this)()) return
         const todo = new ToDo();
