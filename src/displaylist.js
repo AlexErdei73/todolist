@@ -20,7 +20,7 @@ export class DisplayList {
 
         _onMouseClick.set(this, (e) => {
             const li = e.target;
-            this.items.active = Number(li.id);
+            this.items.active = Number(li.dataset.index);
         })
 
         _addContentToLi.set(this, (li, text, date) => {
@@ -40,7 +40,9 @@ export class DisplayList {
         _displayItem.set(this, (item, i, active) => {
             const li = document.createElement('li');
             _addContentToLi.get(this)(li, item.title, item.dueDate);
-            li.id = i;
+            li.dataset.index = i.toString();
+            li.id = 'low';
+            if (item.priority) li.id = item.priority;
             li.addEventListener('click', _onMouseClick.get(this));
             if (active == i) {
                 li.classList.add('active');
