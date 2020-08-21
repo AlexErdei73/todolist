@@ -5,22 +5,29 @@
         <meta charset="UTF-8"> 
         <style>
             body {
-                background: rgb(103, 192, 188);
+                background: rgb(70, 129, 73);
+                font-size: 1.3rem;
             }           
             h1 {
                width: 200px;
                margin: auto;
             }
             div {
-               display: block;
+               background:rgb(103, 192, 188);
                width: 30%;
                height: 600px;
                float: left;
                border: 1px solid black;
+               border-radius:30px;
                margin: 1.5%;
+               position: relative;
+               box-shadow: 20px 20px rgb(31, 58, 33);
             }
             ul {
                 width: 80%;
+                max-height:65%;
+                overflow-y: auto;
+                list-style-type: none;
             }
             #low {
                 background: rgb(103, 192, 188);
@@ -46,6 +53,76 @@
                 background:rgb(31, 56, 55);
                 color:rgb(255, 30, 0);
             }
+            h3 {
+                margin: 4% 9.5%;
+            }
+            label {
+                margin: 0 9.5%;
+            }
+            input {
+                margin: 0 9.5%;
+                width: 80%;
+                height: 1.7rem;
+                border-radius:20px;
+                border-color: black;
+                background:rgb(70, 129, 73);
+                color:white;
+                font-size: 1.1rem;
+            }
+            #duedate {
+                width: 32%;
+                color: black;
+            }
+            #priority {
+                float: right;
+                color: black;
+            }
+            textarea {
+                margin: 0 9.5%;
+                max-width: 80%;
+                max-height: 15%;
+                height: 15%;
+                border-radius:10px;
+                border: black;
+                background:rgb(70, 129, 73);
+                color: black;
+                font-size: 1.1rem;
+            }
+            #notes {
+                max-height: 35%;
+                height: 35%;
+            }
+            select {
+                margin: 0 9.5%;
+                border-color: black;
+                background:rgb(70, 129, 73);
+                color:white;
+            }
+            button {
+                margin: 5% 9.5%;
+                margin-right: 10%;
+                width: 20%;
+                height: 5%;
+                border-color:black;
+                border-radius:30px;
+                background:rgb(31, 56, 55);
+                color: rgb(103, 192, 188); 
+                position: absolute;
+                bottom: 0px;
+            }
+            #delete {
+                right: 0px;
+            }
+            button:hover {
+                background:rgb(70, 129, 73);
+                color:white;
+            }
+            li {
+                margin: 2% 0;
+                padding: 5px;
+                border: 1px solid black;
+                border-radius: 20px;
+            }
         </style> 
     </head>
     <body>
@@ -70,9 +147,9 @@
             <input type = "text" id = "title"><br>
             <label for = "description">Description</label>
             <textarea id = "description" rows = "4" cols = "50"></textarea><br>
-            <label for = "duedate">Due date</label><br>
-            <input type = "date" id = "duedate"><br>
+            <label for = "duedate">Due date</label>
             <label for = "priority">Priority</label><br>
+            <input type = "date" id = "duedate">
             <select id = "priority">
                 <option>low</option>
                 <option>medium</option>
