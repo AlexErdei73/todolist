@@ -1,3 +1,5 @@
+import { allProjets, allProjects } from './index.js'
+
 const _title = new WeakMap();
 const _ul = new WeakMap();
 const _newBtn = new WeakMap();
@@ -72,6 +74,10 @@ export class DisplayList {
         });
     }
 
+    save() {
+        if (allProjects.list.count > 0) allProjects.save('');
+    }
+
     output() {
         _erase.get(this)();
         if (_title.get(this)) _title.get(this).value = this.items.title;
@@ -79,6 +85,7 @@ export class DisplayList {
         this.items.list.arr.forEach((element, i) => {
             _displayItem.get(this)(element, i, active);
         });
+        this.save();
     }
 
     input() {

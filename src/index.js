@@ -1,3 +1,7 @@
 import { Projects } from './projects.js';
 
-const allProjects = new Projects('allProjects');
+export const allProjects = new Projects('allProjects');
+if (localStorage.getItem('.length')) {
+    allProjects.load('');
+}
+allProjects.output();

@@ -40,6 +40,14 @@ export class List {
         }
     }
 
+    erase() {
+        this.arr = [];
+    }
+
+    set arr(i) {
+        _array.set(this, i);
+    } 
+
     get arr() {
         return _array.get(this);
     }

@@ -56,7 +56,6 @@ class ListWithActiveItem {
         list.add(item);
         _active.set(this, list.count - 1);
         _list.set(this, list);
-        this.output();
     }
 
     remove() {
@@ -79,6 +78,29 @@ class ListWithActiveItem {
         this.display.output();
         _outputActiveChild.get(this)();
     }
+
+    save(key) {
+        localStorage.setItem(key + '.title', this.title);
+        localStorage.setItem(key + '.active', this.active);
+        localStorage.setItem(key + '.length', this.list.count);
+        this.list.arr.forEach((item, i) => {
+            let newKey = key + '.' + i.toString();
+            item.save(newKey); 
+        })
+    }
+
+    load(key) {
+        this.list.erase();
+        this.title = localStorage.getItem(key + '.title');
+        _active.set(this, localStorage.getItem(key + '.active'));
+        const length = localStorage.getItem(key + '.length');
+        for (let i = 0; i < length; i++) {
+            let newKey = key + '.' + i.toString();
+            const item = this.createItem();
+            item.load(newKey);
+        }
+    }
+
 }
 
 const _isActive = new WeakMap();
@@ -98,8 +120,14 @@ class Project extends ListWithActiveItem {
 
     new() {
         if (!_isActive.get(this)()) return
-        const todo = new ToDo();
-        this.addNew(todo);  
+        this.createItem();
+        this.output();  
+    }
+
+    createItem() {
+        const todo = new ToDo(); 
+        this.addNew(todo);
+        return todo;
     }
 
     remove() {
@@ -118,7 +146,13 @@ export class Projects extends ListWithActiveItem {
     }
 
     new() {
+        this.createItem();
+        this.output();
+    }
+
+    createItem() {
         const project = new Project('', this);
         super.addNew(project);
+        return project;
     }
 }
