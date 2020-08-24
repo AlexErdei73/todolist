@@ -1,4 +1,4 @@
-import { allProjets, allProjects } from './index.js'
+import { allProjects } from './index.js'
 
 const _title = new WeakMap();
 const _ul = new WeakMap();
@@ -31,7 +31,7 @@ export class DisplayList {
                 dateText = date.toISOString().slice(0, 10);
             } 
             const spanDate = document.createElement('span');
-            spanDate.style = 'float: right';
+            spanDate.id = 'duedate';
             spanDate.textContent = dateText;
             const spanTitle = document.createElement('span');
             spanTitle.textContent = text;
