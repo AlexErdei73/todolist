@@ -47,7 +47,6 @@ class ListWithActiveItem {
         _active.set(this, i);
         _updateDisplay.get(this)(list, active, i);
         this.output();
-        return _active.get(this);
     }
 
     addNew(item) {

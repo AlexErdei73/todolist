@@ -50,7 +50,7 @@ export class DisplayList {
                 li.classList.add('active');
             } else {
                 li.classList.remove('active');
-            };
+            }
             const ul = _ul.get(this);
             ul.appendChild(li);
         });
