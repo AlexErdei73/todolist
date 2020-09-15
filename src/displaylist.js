@@ -27,6 +27,7 @@ export class DisplayList {
         })
 
         _addContentToLi.set(this, (li, text, date) => {
+            li.innerHTML = '';
             let dateText = '';
             if (date.valueOf() != 0) {
                 dateText = date.toISOString().slice(0, 10);
@@ -79,12 +80,18 @@ export class DisplayList {
         });
     }
 
-    changeSelection() {
+    update() {
         const listItems = this.div.querySelectorAll('li');
         const active = this.items.active;
+        let item = this.items.list.arr[0];
         listItems.forEach((li, i) => {
+            item = this.items.list.arr[i];
+            _addContentToLi.get(this)(li, item.title, item.dueDate);
+            li.id = 'low';
+            if (item.priority) li.id = item.priority;
             _changeSelection.get(this)(li, i, active);
         })
+        this.save();
     }
 
     save() {

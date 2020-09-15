@@ -47,9 +47,8 @@ class ListWithActiveItem {
     const active = _active.get(this);
     _active.set(this, i);
     _updateDisplay.get(this)(list, active, i);
-    // Instead of this.output();
     _outputActiveChild.get(this)();
-    this.display.changeSelection();
+    this.display.update();
   }
 
   addNew(item) {
