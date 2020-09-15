@@ -11,6 +11,7 @@ const _onClickNew = new WeakMap();
 const _erase = new WeakMap();
 const _onMouseClick = new WeakMap();
 const _changeSelection = new WeakMap();
+const _setPriority = new WeakMap();
 
 export class DisplayList {
     constructor(div, items) {
@@ -49,12 +50,19 @@ export class DisplayList {
             }
         })
 
+        _setPriority.set(this, (li, priority) => {
+            li.classList.remove('low');
+            li.classList.remove('medium');
+            li.classList.remove('high');
+            if (priority) li.classList.add(priority)
+                else li.classList.add('low');
+        })
+
         _displayItem.set(this, (item, i, active) => {
             const li = document.createElement('li');
             _addContentToLi.get(this)(li, item.title, item.dueDate);
             li.dataset.index = i.toString();
-            li.id = 'low';
-            if (item.priority) li.id = item.priority;
+            _setPriority.get(this)(li, item.priority);
             li.addEventListener('click', _onMouseClick.get(this));
             _changeSelection.get(this)(li, i, active);
             const ul = _ul.get(this);
@@ -87,8 +95,7 @@ export class DisplayList {
         listItems.forEach((li, i) => {
             item = this.items.list.arr[i];
             _addContentToLi.get(this)(li, item.title, item.dueDate);
-            li.id = 'low';
-            if (item.priority) li.id = item.priority;
+            _setPriority.get(this)(li, item.priority);
             _changeSelection.get(this)(li, i, active);
         })
         this.save();

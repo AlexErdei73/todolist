@@ -53,7 +53,6 @@ class ListWithActiveItem {
 
   addNew(item) {
     const list = _list.get(this);
-    item.input();
     list.add(item);
     _active.set(this, list.count - 1);
     _list.set(this, list);
@@ -126,6 +125,7 @@ class Project extends ListWithActiveItem {
 
   createItem() {
     const todo = new ToDo();
+    todo.description = '';
     this.addNew(todo);
     return todo;
   }
