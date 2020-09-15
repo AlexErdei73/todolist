@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AlexErdei73/todolist#readme",
   "devDependencies": {
+    "eslint": "^7.7.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   }

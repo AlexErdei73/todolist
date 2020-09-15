@@ -10,6 +10,7 @@ const _onClickDelete = new WeakMap();
 const _onClickNew = new WeakMap();
 const _erase = new WeakMap();
 const _onMouseClick = new WeakMap();
+const _changeSelection = new WeakMap();
 
 export class DisplayList {
     constructor(div, items) {
@@ -39,6 +40,14 @@ export class DisplayList {
             li.appendChild(spanDate);
         })
 
+        _changeSelection.set(this, (item, i, active) => {
+            if (active == i) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        })
+
         _displayItem.set(this, (item, i, active) => {
             const li = document.createElement('li');
             _addContentToLi.get(this)(li, item.title, item.dueDate);
@@ -46,11 +55,7 @@ export class DisplayList {
             li.id = 'low';
             if (item.priority) li.id = item.priority;
             li.addEventListener('click', _onMouseClick.get(this));
-            if (active == i) {
-                li.classList.add('active');
-            } else {
-                li.classList.remove('active');
-            }
+            _changeSelection.get(this)(li, i, active);
             const ul = _ul.get(this);
             ul.appendChild(li);
         });
@@ -72,6 +77,14 @@ export class DisplayList {
             ul.innerHTML = '';
             _ul.set(this, ul);
         });
+    }
+
+    changeSelection() {
+        const listItems = this.div.querySelectorAll('li');
+        const active = this.items.active;
+        listItems.forEach((li, i) => {
+            _changeSelection.get(this)(li, i, active);
+        })
     }
 
     save() {
