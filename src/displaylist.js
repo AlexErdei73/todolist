@@ -12,6 +12,7 @@ const _erase = new WeakMap();
 const _onMouseClick = new WeakMap();
 const _changeSelection = new WeakMap();
 const _setPriority = new WeakMap();
+const _updateDisplay = new WeakMap();
 
 export class DisplayList {
     constructor(div, items) {
@@ -24,7 +25,10 @@ export class DisplayList {
 
         _onMouseClick.set(this, (e) => {
             const li = e.target;
-            this.items.active = Number(li.dataset.index);
+            const index = Number(li.dataset.index);
+            const active = this.items.active;
+            _updateDisplay.get(this)(active, index);
+            this.items.active = index;
         })
 
         _addContentToLi.set(this, (li, text, date) => {
@@ -86,6 +90,12 @@ export class DisplayList {
             ul.innerHTML = '';
             _ul.set(this, ul);
         });
+
+        _updateDisplay.set(this, (inputindex, outputindex) => {
+            if (inputindex >= 0 && inputindex < items.count)
+              items.arr[inputindex].input();
+            if (outputindex >= 0) items.arr[outputindex].output();
+          });
     }
 
     update() {
