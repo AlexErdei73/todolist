@@ -1,4 +1,4 @@
-import { input, output } from './displaytodo.js';
+import { todoDisplay } from './displaytodo.js';
 
 const _title = new WeakMap();
 const _description = new WeakMap();
@@ -8,6 +8,7 @@ const _notes = new WeakMap();
 
 export class ToDo{
     constructor(title = ''){
+        this.display = todoDisplay;
         _title.set(this, title);
         _dueDate.set(this, new Date(0));
         _notes.set(this, []);
@@ -54,11 +55,11 @@ export class ToDo{
     }
 
     input() {
-        input(this);
+        this.display.input();
     }
 
     output() {
-        output(this);
+        this.display.output();
     }
 
     save(key) {

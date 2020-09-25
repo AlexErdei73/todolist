@@ -1,15 +1,14 @@
 import { List } from './list.js';
 import { ToDo } from './todo.js';
-import { DisplayList } from './displaylist.js';
-import { divTodos, divProjects } from './displaytodo.js';
+import { displayTodos, displayProjects } from './displaylist.js';
 
 const _title = new WeakMap();
 const _list = new WeakMap();
 const _active = new WeakMap();
 
 class ListWithActiveItem {
-  constructor(title, divDisplay) {
-    this.display = new DisplayList(divDisplay, this);
+  constructor(title, display) {
+    this.display = display;
     _title.set(this, title);
     _list.set(this, new List());
     _active.set(this, -1);
@@ -33,7 +32,6 @@ class ListWithActiveItem {
 
   set active(i) {
     _active.set(this, i);
-    this.display.update();
   }
 
   addNew(item) {
@@ -53,10 +51,6 @@ class ListWithActiveItem {
     }
     _list.set(this, list);
     this.output();
-  }
-
-  input() {
-    this.display.input();
   }
 
   output() {
@@ -89,7 +83,7 @@ class ListWithActiveItem {
 const _isActive = new WeakMap();
 class Project extends ListWithActiveItem {
   constructor(title, projects) {
-    super(title, divTodos);
+    super(title, displayTodos);
     this.projects = projects;
     _isActive.set(this, () => {
       const active = this.projects.active;
@@ -119,13 +113,16 @@ class Project extends ListWithActiveItem {
   }
 
   output() {
-    if (_isActive.get(this)()) super.output();
+    if (_isActive.get(this)()) {
+      this.display.items = this;
+      super.output();
+    }
   }
 }
 
 export class Projects extends ListWithActiveItem {
   constructor(title) {
-    super(title, divProjects);
+    super(title, displayProjects);
   }
 
   new() {

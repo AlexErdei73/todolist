@@ -1,3 +1,4 @@
+import { divProjects, divTodos, todoDisplay } from './displaytodo.js';
 import { allProjects } from './index.js'
 
 const _title = new WeakMap();
@@ -15,10 +16,10 @@ const _setPriority = new WeakMap();
 const _updateDisplay = new WeakMap();
 const _outputActiveChild = new WeakMap();
 
-export class DisplayList {
-    constructor(div, items) {
+class DisplayList {
+    constructor(div) {
         this.div = div;
-        this.items = items;
+        this.items = [];
         _title.set(this, div.querySelector('#title'));
         _ul.set(this, div.querySelector('ul'));
         _newBtn.set(this, div.querySelector('#new'));
@@ -30,6 +31,7 @@ export class DisplayList {
             const active = this.items.active;
             _updateDisplay.get(this)(active, index);
             this.items.active = index;
+            this.update();
         })
 
         _addContentToLi.set(this, (li, text, date) => {
@@ -81,7 +83,7 @@ export class DisplayList {
         _deleteBtn.get(this).addEventListener('click', _onClickDelete.get(this));
 
         _onClickNew.set(this, () => {
-            const active = items.list.count - 1;
+            const active = this.items.list.count - 1;
             _updateDisplay.get(this)(active, active);
             this.items.new();
         });
@@ -95,13 +97,17 @@ export class DisplayList {
         });
 
         _updateDisplay.set(this, (inputindex, outputindex) => {
-            if (inputindex >= 0) items.list.arr[inputindex].input();
-            if (outputindex >= 0) items.list.arr[outputindex].output();
+            if (inputindex >= 0) this.items.list.arr[inputindex].display.input();
+            if (outputindex >= 0) this.items.list.arr[outputindex].output();
           });
 
         _outputActiveChild.set(this, () => {
-            const active = items.active;
-            if (active >= 0) items.list.arr[active].output();
+            const active = this.items.active;
+            if (active >= 0) { 
+                const activeItem = this.items.list.arr[active];
+                activeItem.display.items = this.items;
+                activeItem.output();
+            }
           });
     }
 
@@ -138,3 +144,6 @@ export class DisplayList {
         this.items.title = _title.get(this).value;
     }
 }
+
+export const displayTodos = new DisplayList(divTodos);
+export const displayProjects = new DisplayList(divProjects);

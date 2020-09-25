@@ -5,7 +5,14 @@ const dueDate = divTodo.querySelector('#duedate');
 const priority = divTodo.querySelector('#priority');
 const notes = divTodo.querySelector('#notes');
 
-export function output(todo) {
+class TodoDisplay {
+
+    constructor(){
+        this.items = [];
+    } 
+
+    output() {
+        const todo = this.items.list.arr[this.items.active];
         if (!todo) return
         title.value = todo.title;
         description.value = todo.description;
@@ -14,7 +21,8 @@ export function output(todo) {
         notes.value = todo.notes.join('\n');
     }
 
-export function input(todo) {
+    input() {
+        const todo = this.items.list.arr[this.items.active];
         if (!todo) return
         todo.title = title.value;
         todo.description = description.value;
@@ -26,6 +34,9 @@ export function input(todo) {
         todo.priority = priority.value;
         todo.notes = notes.value.split('\n');
     }
+}
 
 export const divTodos = document.querySelector('.todos');
 export const divProjects = document.querySelector('.projects');
+
+export const todoDisplay = new TodoDisplay();
