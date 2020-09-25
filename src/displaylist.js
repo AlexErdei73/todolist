@@ -13,6 +13,7 @@ const _onMouseClick = new WeakMap();
 const _changeSelection = new WeakMap();
 const _setPriority = new WeakMap();
 const _updateDisplay = new WeakMap();
+const _outputActiveChild = new WeakMap();
 
 export class DisplayList {
     constructor(div, items) {
@@ -80,6 +81,8 @@ export class DisplayList {
         _deleteBtn.get(this).addEventListener('click', _onClickDelete.get(this));
 
         _onClickNew.set(this, () => {
+            const active = items.list.count - 1;
+            _updateDisplay.get(this)(active, active);
             this.items.new();
         });
 
@@ -92,13 +95,18 @@ export class DisplayList {
         });
 
         _updateDisplay.set(this, (inputindex, outputindex) => {
-            if (inputindex >= 0 && inputindex < items.count)
-              items.arr[inputindex].input();
-            if (outputindex >= 0) items.arr[outputindex].output();
+            if (inputindex >= 0) items.list.arr[inputindex].input();
+            if (outputindex >= 0) items.list.arr[outputindex].output();
+          });
+
+        _outputActiveChild.set(this, () => {
+            const active = items.active;
+            if (active >= 0) items.list.arr[active].output();
           });
     }
 
     update() {
+        _outputActiveChild.get(this)();
         const listItems = this.div.querySelectorAll('li');
         const active = this.items.active;
         let item = this.items.list.arr[0];
@@ -122,6 +130,7 @@ export class DisplayList {
         this.items.list.arr.forEach((element, i) => {
             _displayItem.get(this)(element, i, active);
         });
+        _outputActiveChild.get(this)();
         this.save();
     }
 

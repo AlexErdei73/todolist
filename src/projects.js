@@ -6,18 +6,13 @@ import { divTodos, divProjects } from './displaytodo.js';
 const _title = new WeakMap();
 const _list = new WeakMap();
 const _active = new WeakMap();
-const _outputActiveChild = new WeakMap();
+
 class ListWithActiveItem {
   constructor(title, divDisplay) {
     this.display = new DisplayList(divDisplay, this);
     _title.set(this, title);
     _list.set(this, new List());
     _active.set(this, -1);
-    _outputActiveChild.set(this, () => {
-      const items = _list.get(this).arr;
-      const active = _active.get(this);
-      if (active >= 0) items[active].output();
-    });
   }
 
   set title(text) {
@@ -38,7 +33,6 @@ class ListWithActiveItem {
 
   set active(i) {
     _active.set(this, i);
-    _outputActiveChild.get(this)();
     this.display.update();
   }
 
@@ -67,7 +61,6 @@ class ListWithActiveItem {
 
   output() {
     this.display.output();
-    _outputActiveChild.get(this)();
   }
 
   save(key) {
