@@ -8,12 +8,12 @@ const notes = divTodo.querySelector('#notes');
 class TodoDisplay {
 
     constructor(){
-        this.items = [];
+        this.todo = null;
     } 
 
-    output() {
-        const todo = this.items.list.arr[this.items.active];
+    output(todo) {
         if (!todo) return
+        this.todo = todo;
         title.value = todo.title;
         description.value = todo.description;
         dueDate.value = todo.dueDate.toISOString().slice(0, 10);
@@ -21,8 +21,7 @@ class TodoDisplay {
         notes.value = todo.notes.join('\n');
     }
 
-    input() {
-        const todo = this.items.list.arr[this.items.active];
+    input(todo) {
         if (!todo) return
         todo.title = title.value;
         todo.description = description.value;
@@ -33,6 +32,10 @@ class TodoDisplay {
         }
         todo.priority = priority.value;
         todo.notes = notes.value.split('\n');
+    }
+
+    get inputTitle() {
+        return title;
     }
 }
 

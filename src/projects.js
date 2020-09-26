@@ -50,11 +50,6 @@ class ListWithActiveItem {
       }
     }
     _list.set(this, list);
-    this.output();
-  }
-
-  output() {
-    this.display.output();
   }
 
   save(key) {
@@ -98,7 +93,6 @@ class Project extends ListWithActiveItem {
   new() {
     if (!_isActive.get(this)()) return;
     this.createItem();
-    this.output();
   }
 
   createItem() {
@@ -111,13 +105,6 @@ class Project extends ListWithActiveItem {
   remove() {
     if (_isActive.get(this)()) super.remove();
   }
-
-  output() {
-    if (_isActive.get(this)()) {
-      this.display.items = this;
-      super.output();
-    }
-  }
 }
 
 export class Projects extends ListWithActiveItem {
@@ -127,7 +114,6 @@ export class Projects extends ListWithActiveItem {
 
   new() {
     this.createItem();
-    this.output();
   }
 
   createItem() {

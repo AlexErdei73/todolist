@@ -16,5 +16,4 @@ if (localStorage.getItem('.length')) {
 } else {
     createSampleProject();
 }
-allProjects.display.items = allProjects;
-allProjects.output();
+allProjects.display.output(allProjects);

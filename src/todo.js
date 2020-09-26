@@ -54,14 +54,6 @@ export class ToDo{
         return _notes.get(this);
     }
 
-    input() {
-        this.display.input();
-    }
-
-    output() {
-        this.display.output();
-    }
-
     save(key) {
         localStorage.setItem(key + '.0', this.title);
         localStorage.setItem(key + '.1', this.description);

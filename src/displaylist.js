@@ -1,4 +1,4 @@
-import { divProjects, divTodos, todoDisplay } from './displaytodo.js';
+import { divProjects, divTodos } from './displaytodo.js';
 import { allProjects } from './index.js'
 
 const _title = new WeakMap();
@@ -19,7 +19,7 @@ const _outputActiveChild = new WeakMap();
 class DisplayList {
     constructor(div) {
         this.div = div;
-        this.items = [];
+        this.item = [];
         _title.set(this, div.querySelector('#title'));
         _ul.set(this, div.querySelector('ul'));
         _newBtn.set(this, div.querySelector('#new'));
@@ -28,9 +28,9 @@ class DisplayList {
         _onMouseClick.set(this, (e) => {
             const li = e.target;
             const index = Number(li.dataset.index);
-            const active = this.items.active;
+            const active = this.item.active;
             _updateDisplay.get(this)(active, index);
-            this.items.active = index;
+            this.item.active = index;
             this.update();
         })
 
@@ -77,15 +77,21 @@ class DisplayList {
         });
 
         _onClickDelete.set(this, () => {
-            this.items.remove();
+            this.item.remove();
+            this.output(this.item);
         });
 
         _deleteBtn.get(this).addEventListener('click', _onClickDelete.get(this));
 
         _onClickNew.set(this, () => {
-            const active = this.items.list.count - 1;
-            _updateDisplay.get(this)(active, active);
-            this.items.new();
+            const index = this.item.active;
+            this.item.new();
+            const active = this.item.active;
+            _updateDisplay.get(this)(index, active);
+            const activeItem = this.item.list.arr[active];
+            activeItem.display.inputTitle.value = '';
+            _outputActiveChild.get(this);
+            this.output(this.item);
         });
 
         _newBtn.get(this).addEventListener('click', _onClickNew.get(this));
@@ -97,16 +103,21 @@ class DisplayList {
         });
 
         _updateDisplay.set(this, (inputindex, outputindex) => {
-            if (inputindex >= 0) this.items.list.arr[inputindex].display.input();
-            if (outputindex >= 0) this.items.list.arr[outputindex].output();
+            if (inputindex >= 0) {
+                const inputItem = this.item.list.arr[inputindex];
+                inputItem.display.input(inputItem);
+            }
+            if (outputindex >= 0) {
+                const outputItem = this.item.list.arr[outputindex];
+                outputItem.display.output(outputItem);
+            }
           });
 
         _outputActiveChild.set(this, () => {
-            const active = this.items.active;
+            const active = this.item.active;
             if (active >= 0) { 
-                const activeItem = this.items.list.arr[active];
-                activeItem.display.items = this.items;
-                activeItem.output();
+                const activeItem = this.item.list.arr[active];
+                activeItem.display.output(activeItem);
             }
           });
     }
@@ -114,10 +125,10 @@ class DisplayList {
     update() {
         _outputActiveChild.get(this)();
         const listItems = this.div.querySelectorAll('li');
-        const active = this.items.active;
-        let item = this.items.list.arr[0];
+        const active = this.item.active;
+        let item = null;
         listItems.forEach((li, i) => {
-            item = this.items.list.arr[i];
+            item = this.item.list.arr[i];
             _addContentToLi.get(this)(li, item.title, item.dueDate);
             _setPriority.get(this)(li, item.priority);
             _changeSelection.get(this)(li, i, active);
@@ -129,19 +140,25 @@ class DisplayList {
         if (allProjects.list.count > 0) allProjects.save('');
     }
 
-    output() {
+    output(item) {
         _erase.get(this)();
-        if (_title.get(this)) _title.get(this).value = this.items.title;
-        const active = this.items.active;
-        this.items.list.arr.forEach((element, i) => {
+        this.item = item;
+        if (item.display.inputTitle && item.title) 
+            item.display.inputTitle.value = item.title;
+        const active = item.active;
+        item.list.arr.forEach((element, i) => {
             _displayItem.get(this)(element, i, active);
         });
         _outputActiveChild.get(this)();
         this.save();
     }
 
-    input() {
-        this.items.title = _title.get(this).value;
+    input(item) {
+        item.title = item.display.inputTitle.value;
+    }
+
+    get inputTitle() {
+        return _title.get(this);
     }
 }
 
