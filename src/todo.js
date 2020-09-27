@@ -5,14 +5,15 @@ const _description = new WeakMap();
 const _dueDate = new WeakMap();
 const _priority = new WeakMap();
 const _notes = new WeakMap();
+const _display = new WeakMap();
 
 export class ToDo{
     constructor(title = '', description = ''){
-        this.display = todoDisplay;
         _title.set(this, title);
         _description.set(this, description);
         _dueDate.set(this, new Date(0));
         _notes.set(this, []);
+        _display.set(this, todoDisplay);
     }
 
     set title(t) {
@@ -53,5 +54,9 @@ export class ToDo{
     
     get notes() {
         return _notes.get(this);
+    }
+
+    get display() {
+        return _display.get(this);
     }
 }

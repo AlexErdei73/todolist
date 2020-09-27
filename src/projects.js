@@ -34,11 +34,6 @@ class ArrayWithActiveItem extends Array{
     _active.set(this, i);
   }
 
-  addNew(item) {
-    this.push(item);
-    _active.set(this, this.length - 1);
-  }
-
   remove() {
     if (this.length > 0) {
       this.splice(this.active, 1);
@@ -68,7 +63,7 @@ class Project extends ArrayWithActiveItem {
 
   createItem() {
     const todo = new ToDo();
-    this.addNew(todo);
+    this.push(todo);
     return todo;
   }
 }
@@ -84,7 +79,7 @@ export class Projects extends ArrayWithActiveItem {
 
   createItem() {
     const project = new Project('');
-    super.addNew(project);
+    super.push(project);
     return project;
   }
 }

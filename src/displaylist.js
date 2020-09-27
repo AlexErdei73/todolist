@@ -14,13 +14,16 @@ const _erase = new WeakMap();
 const _onMouseClick = new WeakMap();
 const _changeSelection = new WeakMap();
 const _setPriority = new WeakMap();
-const _updateDisplay = new WeakMap();
+const _updateChildDisplay = new WeakMap();
 const _outputActiveChild = new WeakMap();
+const _update = new WeakMap();
+const _div = new WeakMap();
+const _item = new WeakMap();
 
 class DisplayList {
     constructor(div) {
-        this.div = div;
-        this.item = [];
+        _div.set(this, div);
+        _item.set(this, []);
         _title.set(this, div.querySelector('#title'));
         _ul.set(this, div.querySelector('ul'));
         _newBtn.set(this, div.querySelector('#new'));
@@ -30,9 +33,9 @@ class DisplayList {
             const li = e.target;
             const index = Number(li.dataset.index);
             const active = this.item.active;
-            _updateDisplay.get(this)(active, index);
+            _updateChildDisplay.get(this)(active, index);
             this.item.active = index;
-            this.update();
+            _update.get(this)();
         })
 
         _addContentToLi.set(this, (li, text, date) => {
@@ -87,8 +90,9 @@ class DisplayList {
         _onClickNew.set(this, () => {
             const index = this.item.active;
             this.item.new();
-            const active = this.item.active;
-            _updateDisplay.get(this)(index, active);
+            const active = this.item.length - 1;
+            this.item.active = active;
+            _updateChildDisplay.get(this)(index, active);
             const activeItem = this.item[active];
             activeItem.display.inputTitle.value = '';
             _outputActiveChild.get(this);
@@ -103,7 +107,7 @@ class DisplayList {
             _ul.set(this, ul);
         })
 
-        _updateDisplay.set(this, (inputindex, outputindex) => {
+        _updateChildDisplay.set(this, (inputindex, outputindex) => {
             if (inputindex >= 0) {
                 const inputItem = this.item[inputindex];
                 inputItem.display.input(inputItem);
@@ -121,20 +125,20 @@ class DisplayList {
                 activeItem.display.output(activeItem);
             }
           })
-    }
 
-    update() {
-        _outputActiveChild.get(this)();
-        const listItems = this.div.querySelectorAll('li');
-        const active = this.item.active;
-        let item = null;
-        listItems.forEach((li, i) => {
-            item = this.item[i];
-            _addContentToLi.get(this)(li, item.title, item.dueDate);
-            _setPriority.get(this)(li, item.priority);
-            _changeSelection.get(this)(li, i, active);
+        _update.set(this, () => {
+            _outputActiveChild.get(this)();
+            const listItems = _div.get(this).querySelectorAll('li');
+            const active = this.item.active;
+            let item = null;
+            listItems.forEach((li, i) => {
+                item = this.item[i];
+                _addContentToLi.get(this)(li, item.title, item.dueDate);
+                _setPriority.get(this)(li, item.priority);
+                _changeSelection.get(this)(li, i, active);
+            })
+            this.save();
         })
-        this.save();
     }
 
     save() {
@@ -143,7 +147,7 @@ class DisplayList {
 
     output(item) {
         _erase.get(this)();
-        this.item = item;
+        _item.set(this, item);
         if (item.display.inputTitle && item.title) 
             item.display.inputTitle.value = item.title;
         const active = item.active;
@@ -156,6 +160,10 @@ class DisplayList {
 
     input(item) {
         item.title = item.display.inputTitle.value;
+    }
+
+    get item() {
+        return _item.get(this);
     }
 
     get inputTitle() {
