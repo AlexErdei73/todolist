@@ -1,5 +1,6 @@
 import { divProjects, divTodos } from './displaytodo.js';
-import { allProjects } from './index.js'
+import { allProjects } from './index.js';
+import { storage } from './storage.js';
 
 const _title = new WeakMap();
 const _ul = new WeakMap();
@@ -137,7 +138,7 @@ class DisplayList {
     }
 
     save() {
-        if (allProjects.list.count > 0) allProjects.save('');
+        if (allProjects.list.count > 0) storage.save('', allProjects);
     }
 
     output(item) {

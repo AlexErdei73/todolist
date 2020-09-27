@@ -53,24 +53,4 @@ export class ToDo{
     get notes() {
         return _notes.get(this);
     }
-
-    save(key) {
-        localStorage.setItem(key + '.0', this.title);
-        localStorage.setItem(key + '.1', this.description);
-        const dateString = this.dueDate.toISOString().slice(0, 10);
-        localStorage.setItem(key + '.2', dateString);
-        localStorage.setItem(key + '.3', this.priority);
-        const joinedNotes = this.notes.join('\n');
-        localStorage.setItem(key + '.4', joinedNotes);
-    }
-
-    load(key) {
-        this.title = localStorage.getItem(key + '.0');
-        this.description = localStorage.getItem(key + '.1');
-        const dateString = localStorage.getItem(key + '.2');
-        this.dueDate = new Date(dateString);
-        this.priority = localStorage.getItem(key + '.3');
-        const joinedNotes = localStorage.getItem(key + '.4');
-        this.notes = joinedNotes.split('\n');
-    }
 }

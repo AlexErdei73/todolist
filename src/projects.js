@@ -51,28 +51,6 @@ class ListWithActiveItem {
     }
     _list.set(this, list);
   }
-
-  save(key) {
-    localStorage.setItem(key + '.title', this.title);
-    localStorage.setItem(key + '.active', this.active);
-    localStorage.setItem(key + '.length', this.list.count);
-    this.list.arr.forEach((item, i) => {
-      let newKey = key + '.' + i.toString();
-      item.save(newKey);
-    });
-  }
-
-  load(key) {
-    this.list.erase();
-    this.title = localStorage.getItem(key + '.title');
-    _active.set(this, localStorage.getItem(key + '.active'));
-    const length = localStorage.getItem(key + '.length');
-    for (let i = 0; i < length; i++) {
-      let newKey = key + '.' + i.toString();
-      const item = this.createItem();
-      item.load(newKey);
-    }
-  }
 }
 
 const _isActive = new WeakMap();

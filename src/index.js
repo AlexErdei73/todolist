@@ -1,5 +1,6 @@
 import { Projects } from './projects.js';
 import { todos } from './sampletodos.js';
+import { storage } from './storage.js';
 
 function createSampleProject() {
     const sampleProject = allProjects.createItem();
@@ -11,9 +12,8 @@ function createSampleProject() {
 }
 
 export const allProjects = new Projects('allProjects');
-if (localStorage.getItem('.length')) {
-    allProjects.load('');
-} else {
-    createSampleProject();
-}
+
+if (localStorage.getItem('.length')) storage.load('', allProjects)
+    else createSampleProject();
+    
 allProjects.display.output(allProjects);
