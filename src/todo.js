@@ -7,9 +7,10 @@ const _priority = new WeakMap();
 const _notes = new WeakMap();
 
 export class ToDo{
-    constructor(title = ''){
+    constructor(title = '', description = ''){
         this.display = todoDisplay;
         _title.set(this, title);
+        _description.set(this, description);
         _dueDate.set(this, new Date(0));
         _notes.set(this, []);
     }

@@ -75,12 +75,12 @@ class DisplayList {
             _changeSelection.get(this)(li, i, active);
             const ul = _ul.get(this);
             ul.appendChild(li);
-        });
+        })
 
         _onClickDelete.set(this, () => {
             this.item.remove();
             this.output(this.item);
-        });
+        })
 
         _deleteBtn.get(this).addEventListener('click', _onClickDelete.get(this));
 
@@ -89,11 +89,11 @@ class DisplayList {
             this.item.new();
             const active = this.item.active;
             _updateDisplay.get(this)(index, active);
-            const activeItem = this.item.list.arr[active];
+            const activeItem = this.item[active];
             activeItem.display.inputTitle.value = '';
             _outputActiveChild.get(this);
             this.output(this.item);
-        });
+        })
 
         _newBtn.get(this).addEventListener('click', _onClickNew.get(this));
 
@@ -101,26 +101,26 @@ class DisplayList {
             const ul = _ul.get(this);
             ul.innerHTML = '';
             _ul.set(this, ul);
-        });
+        })
 
         _updateDisplay.set(this, (inputindex, outputindex) => {
             if (inputindex >= 0) {
-                const inputItem = this.item.list.arr[inputindex];
+                const inputItem = this.item[inputindex];
                 inputItem.display.input(inputItem);
             }
             if (outputindex >= 0) {
-                const outputItem = this.item.list.arr[outputindex];
+                const outputItem = this.item[outputindex];
                 outputItem.display.output(outputItem);
             }
-          });
+          })
 
         _outputActiveChild.set(this, () => {
             const active = this.item.active;
             if (active >= 0) { 
-                const activeItem = this.item.list.arr[active];
+                const activeItem = this.item[active];
                 activeItem.display.output(activeItem);
             }
-          });
+          })
     }
 
     update() {
@@ -129,7 +129,7 @@ class DisplayList {
         const active = this.item.active;
         let item = null;
         listItems.forEach((li, i) => {
-            item = this.item.list.arr[i];
+            item = this.item[i];
             _addContentToLi.get(this)(li, item.title, item.dueDate);
             _setPriority.get(this)(li, item.priority);
             _changeSelection.get(this)(li, i, active);
@@ -138,7 +138,7 @@ class DisplayList {
     }
 
     save() {
-        if (allProjects.list.count > 0) storage.save('', allProjects);
+        if (allProjects.length > 0) storage.save('', allProjects);
     }
 
     output(item) {
@@ -147,7 +147,7 @@ class DisplayList {
         if (item.display.inputTitle && item.title) 
             item.display.inputTitle.value = item.title;
         const active = item.active;
-        item.list.arr.forEach((element, i) => {
+        item.forEach((element, i) => {
             _displayItem.get(this)(element, i, active);
         });
         _outputActiveChild.get(this)();
