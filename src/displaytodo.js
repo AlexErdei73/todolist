@@ -2,7 +2,7 @@ const divTodo = document.querySelector('.todo');
 const title = divTodo.querySelector('#title');
 const description = divTodo.querySelector('#description');
 const dueDate = divTodo.querySelector('#duedate');
-const priority = divTodo.querySelector('#priority');
+const priority = divTodo.querySelector('select#priority');
 const notes = divTodo.querySelector('#notes');
 
 class TodoDisplay {
